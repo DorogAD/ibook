@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+<!--
+{% if request.user.is_authenticated %}
+    <div>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#navbar-main">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Вы авторизованы как "{{ user }}"</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbar-main">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="{% url 'login' %}">Вход<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Пункт 2</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">Поиск книг по жанрам<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Подпункт 1.1</a></li>
+                                <li><a href="#">Подпункт 1.2</a></li>
+                                <li><a href="#">Подпункт 1.3</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Подпункт 1.4</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Подпункт 1.5</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Поиск">
+                        </div>
+                        <button type="submit" class="btn btn-default">Найти</button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{% url 'logout' %}">Выход</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endif %}
+-->
+    <section class="bg-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>подари новую жизнь старой книге</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-post-area">
+        <div class="container">
+            <div class="row">
+                <div class="blog-post-area-style">
+                    {% for book in books %}
+                        <div class="col-md-3">
+                            <div class="single-post">
+                                {% if book.photo %}
+                                    <img src="{{ book.photo.url }}" alt="{{ book.title }}">
+                                {% else %}
+                                    <img src="{% static 'img/no-image.jpg' %}" alt="{{ book.title }}">
+                                {% endif %}
+                                <h3><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>
+                                <h4><h3><a href="{{ book.get_absolute_url }}">{{ book.author }}</a></h3></h4>
+                                <h4><span>Владелец: <span class="author-name">{{ book.owner }}</span></span>
+                                </h4>
+                                <p>{{ book.content|truncatewords_html:20|safe }}</p>
+                                <h4><span>Добавлено: {{ book.created_at|date:"d.m.Y" }}</span></h4>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% if page_obj.has_other_pages %}
+            <div class="pegination">
+                <div class="nav-links">
+
+                    {% for p in page_obj.paginator.page_range %}
+                        {% if page_obj.number == p %}
+                            <span class="page-numbers current">{{ p }}</span>
+                        {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+                            <a class="page-numbers" href="?page={{ p }}">{{ p }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="page-numbers" href="?page={{ page_obj.next_page_number }}"><i
+                                class="fa fa-angle-right" aria-hidden="true"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+    </section>
+
+{% endblock %}
+
+
+
+
+

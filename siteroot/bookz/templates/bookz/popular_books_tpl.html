@@ -1,0 +1,18 @@
+{% load static %}
+<h2 class="sidebar-title">Популярные книги</h2>
+<div class="grid">
+    {% for book in books %}
+    <div class="portfolio-item popular">
+        {% if book.photo %}
+        <img src="{{ book.photo.url }}" alt="{{ book.title }}">
+        {% else %}
+        <img src="{% static 'img/no-image.jpg' %}" alt="{{ book.title }}">
+        {% endif %}
+
+        <div class="portfolio-text">
+            <h5><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h5>
+            <p>By {{ book.author }} <span>|</span>{{ book.created_at|date:"d.m.Y" }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>

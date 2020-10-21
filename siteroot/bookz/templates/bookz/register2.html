@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load sidebar %}
+
+{% block title %}{{ book.title }} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <section class="bg-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>подари новую жизнь старой книге</h3>
+                        <p>РЕГИСТРАЦИЯ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="single-blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="border-top">
+                        <div class="col-md-8">
+                            <div class="blog-area">
+                                <div class="blog-area-part">
+                                    <div class="container">
+                                        {% if messages %}
+
+                                            {% for message in messages %}
+
+                                                {% if message.tags == 'error' %}
+                                                    <div class="alert alert-danger" role="alert">
+                                                        {{ message }}
+                                                    </div>
+                                                {% else %}
+                                                    <div class="alert alert-{{ message.tags }}" role="alert">
+                                                        {{ message }}
+                                                    </div>
+                                                {% endif %}
+
+                                            {% endfor %}
+
+                                        {% endif %}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="border-top">
+                                                    <div class="col-md-8">
+                                                        <div class="blog-area">
+                                                            <form action="#" method="post">
+                                                                {% csrf_token %}
+                                                                {{ form.as_p }}
+                                                                <button type="submit" class="btn btn-primary btn-block">
+                                                                    Регистрация
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="newsletter">
+                                <h2 class="sidebar-title">Поиск</h2>
+                                <form action="{% url 'search' %}" method="get">
+                                    <input type="text" name="s" placeholder="Введите название книги">
+                                    <input type="submit" value="Поиск">
+                                </form>
+                            </div>
+
+                            {% get_popular 5 %}
+
+                            {% get_genres %}
+
+                            <div class="newsletter">
+                                <h2 class="sidebar-title">Subscribe To oUR nEWSLETTER</h2>
+                                <form action="#" method="post">
+                                    <input type="email" name="" id="" placeholder="Email">
+                                    <input type="submit" value="Subscribe">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+<!-- а это первоначальный вариант формы регистрации, без боковой колонки -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <section class="bg-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>подари новую жизнь старой книге</h3>
+                        <p>РЕГИСТРАЦИЯ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="single-blog-area">
+        <div class="container">
+            {% if messages %}
+
+            {% for message in messages %}
+
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+
+            {% endif %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="border-top">
+                        <div class="col-md-8">
+                            <div class="blog-area">
+                                <form action="#" method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-primary btn-block">Регистрация</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

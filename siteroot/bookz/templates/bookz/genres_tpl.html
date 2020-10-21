@@ -1,0 +1,6 @@
+<div class="tags">
+    <h2 class="sidebar-title">Жанры</h2>
+    {% for genre in genres %}
+    <p><a href="{{ genre.get_absolute_url }}">{{ genre.title }}</a></p>
+    {% endfor %}
+</div>

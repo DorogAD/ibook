@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load sidebar %}
+
+{% block title %}{{ book.title }} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <section class="bg-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>подари новую жизнь старой книге</h3>
+                        <p>ДОБАВЛЕНИЕ КНИГИ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="single-blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="border-top">
+                        <div class="col-md-8">
+                            <div class="blog-area">
+                                <div class="blog-area-part">
+                                    {% block content %}
+                                        <h1>Add new book</h1>
+                                        <form action="{% url 'add_news' %}"method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            {{ form.as_p }}
+                                            <button type="submit">Save</button>
+                                        </form>
+                                    {% endblock %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="newsletter">
+                                <h1 class="sidebar-title">Страница добавления книги </h1>
+                                <p style="font-size: x-large">Заполните информацию о книге которую хотите добавить</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock %}
+
