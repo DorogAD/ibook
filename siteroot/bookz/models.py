@@ -29,7 +29,7 @@ class Article(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name='Категория')
-    slug = models.SlugField(max_length=50, verbose_name='Url', unique=True)
+    slug = models.SlugField(max_length=100, verbose_name='Url', unique=True)
 
     def __str__(self):
         return self.title
@@ -61,7 +61,7 @@ class Genre(models.Model):
 
 class Town(models.Model):
     title = models.CharField(max_length=100, verbose_name='Город')
-    slug = models.SlugField(max_length=50, verbose_name='Url', unique=True)
+    slug = models.SlugField(max_length=100, verbose_name='Url', unique=True)
 
     def __str__(self):
         return self.title
@@ -74,7 +74,7 @@ class Town(models.Model):
 
 class Type(models.Model):
     title = models.CharField(max_length=100, verbose_name='Предложение')
-    slug = models.SlugField(max_length=50, verbose_name='Url', unique=True)
+    slug = models.SlugField(max_length=100, verbose_name='Url', unique=True)
 
     def __str__(self):
         return self.title
@@ -88,7 +88,7 @@ class Type(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название книги')
-    slug = models.SlugField(max_length=50, verbose_name='Url', unique=True)
+    slug = models.SlugField(max_length=100, verbose_name='Url', unique=True)
     author = models.CharField(max_length=100, verbose_name='Автор книги')
     content = models.TextField(blank=True, verbose_name='Аннотация')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Опубликовано')
@@ -111,3 +111,19 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse('book', kwargs={"slug": self.slug})
 
+
+class Owner(models.Model):
+    name = models.ForeignKey(Book, on_delete=models.PROTECT, related_name='books', verbose_name='Владелец')
+    slug = models.SlugField(max_length=100, verbose_name='Url', unique=True)
+    email = models.EmailField(blank=False, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Владелец'
+        verbose_name_plural = 'Владельцы'
+        ordering = ['name']
+
+    def get_absolute_url(self):
+        return reverse('owner', kwargs={"slug": self.slug})

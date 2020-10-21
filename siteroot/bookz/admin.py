@@ -39,8 +39,14 @@ class TypeAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
+class OwnerAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Type, TypeAdmin)
 admin.site.register(Town, TownAdmin)
+admin.site.register(Owner, OwnerAdmin)
