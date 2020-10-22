@@ -115,9 +115,27 @@ class Search(ListView):
 def newbook(request):
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
-    else:
-        form = BookForm()
-        return render(request, 'newbook.html', {'form': form})
+        if form.is_valid():
+            #print('valid')
+
+            post_entry = Book()
+            post_entry.title = form.cleaned_data['title']
+            post_entry.author = form.cleaned_data['author']
+            post_entry.content = form.cleaned_data['content']
+            #post_entry.genres = form.cleaned_data['genres']
+            #post_entry.created_at = datetime.datetime.now()
+            #post_entry.photo = form.cleaned_data['photo']
+            #post_entry.town = form.cleaned_data['town']
+            #post_entry.type = form.cleaned_data['type']
+
+            post_entry.save()
+            #print(form.cleaned_data)
+            #Book.objects.create(**form.cleaned_data)
+            return redirect('/home/')
+
+    form = BookForm()
+    #print('not valid')
+    return render(request, 'newbook.html', {'form': form})
 
 '''
 def add_book(request):

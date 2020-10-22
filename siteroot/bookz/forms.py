@@ -1,9 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Book
+from .models import Genre, Town, Type
 
-from bookz.models import Book
 
 
 class UserLoginForm(AuthenticationForm):
@@ -20,19 +19,14 @@ class UserRegisterForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
+
 class BookForm(forms.Form):
 
-    title = forms.CharField(max_length=255, label='title')
-    content = forms.CharField(label='content')
-    #genre = forms.ModelChoiceField(queryset=Book.genres.all())
+    title = forms.CharField(max_length=255, label='Название книги')
+    author = forms.CharField(max_length=100, label='Автор книги')
+    content = forms.CharField(label='Аннотация', widget=forms.Textarea)
+    #genres = forms.ModelMultipleChoiceField(queryset=Genre.objects.all(), label='Жанры', widget=forms.Select)
+    #photo = forms.ImageField(label='Фото обложки')
+    #town = forms.ModelChoiceField(queryset=Town.objects.all(), label='Город', widget=forms.Select)
+    #type = forms.ModelChoiceField(queryset=Type.objects.all(), label='Вариант', widget=forms.Select)
 
-
-'''
-class AddBookModelForm(forms.ModelForm):
-
-    class Meta:
-
-        model = Book
-        fields = ('title', 'author', 'content', 'type', 'photo')
-        labels = {'photo': 'Book photo'}
-'''

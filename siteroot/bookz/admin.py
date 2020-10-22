@@ -8,13 +8,15 @@ from .models import *
 class BookAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     save_as = True
-    list_display = ('id', 'title', 'slug', 'author', 'category', 'content', 'created_at', 'get_photo', 'town', 'type')
+    #перечень полей которые видно в админке при просмотре списка книг
+    list_display = ('id', 'title', 'slug', 'author', 'category', 'content', 'created_at', 'get_photo', 'town', 'type', 'owner')
     list_display_links = ('id', 'title')
     search_fields = ('title',)
     list_filter = ('category', 'genres')
     save_on_top = True
     readonly_fields = ('views', 'created_at', 'get_photo')
-    fields = ('title', 'author', 'slug', 'genres', 'category', 'content', 'photo', 'get_photo', 'owner', 'town', 'type')
+    #перечень полей которые показывает админка при добавлении новой книги
+    fields = ('title', 'author', 'genres', 'category', 'content', 'photo', 'get_photo', 'owner', 'town', 'type')
 
     def get_photo(self, obj):
         if obj.photo:
