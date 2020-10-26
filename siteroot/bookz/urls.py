@@ -10,6 +10,8 @@ urlpatterns = [
     path('category/<str:slug>/', BooksByCategory.as_view(), name='category'),
     path('category/zhanry/', GetBook.as_view(), name='book'),
     path('genres/<str:slug>/', BooksByGenre.as_view(), name='genre'),
-    path('book/<str:slug>/', GetBook.as_view(), name='book'),
+    path('owner/<str:slug>/', BooksByOwners.as_view(), name='owner'),# добавил чтобы выводить владельца на странице книги
+    path('genres/', genres_all, name='all_genres'),#добавил путь чтобы выводить жанры на отдельной странице
+    path('book/<str:slug>/', GetBook.as_view(), name='book'),#адрес ссылки на отдельную книгу
     path('search/', Search.as_view(), name='search'),
 ]

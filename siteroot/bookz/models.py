@@ -5,7 +5,7 @@ from django.urls import reverse
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100, verbose_name='Категория')
+    title = models.CharField(default='Новинки', max_length=100, verbose_name='Категория')
     slug = models.SlugField(max_length=100, verbose_name='Url', unique=True)
 
     def __str__(self):
@@ -90,7 +90,7 @@ class Book(models.Model):
     views = models.IntegerField(default=0, verbose_name='Кол-во просмотров')
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, related_name='books', verbose_name='Владелец книги')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='books', verbose_name='Раздел')
-    genres = models.ManyToManyField(Genre, blank=True, related_name='books', verbose_name='Жанры')
+    genres = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='books', verbose_name='Жанры')
     town = models.ForeignKey(Town, on_delete=models.CASCADE, related_name='books', verbose_name='Город')
     type = models.ForeignKey(Type, on_delete=models.CASCADE, related_name='books', verbose_name='Предложение')
 
@@ -101,6 +101,8 @@ class Book(models.Model):
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
         ordering = ['-created_at']
+        permissions = (("can_post", "can post"),)
 
     def get_absolute_url(self):
         return reverse('book', kwargs={"slug": self.slug})
+

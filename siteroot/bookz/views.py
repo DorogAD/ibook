@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
-from .models import Book, Category, Genre
+from .models import Book, Category, Genre, Owner
 from django.db.models import F
 from django.contrib import messages
 from .forms import UserRegisterForm, UserLoginForm, BookForm  # , AddBookModelForm
@@ -72,15 +72,16 @@ class BooksByCategory(ListView):
 
 
 class GetBook(DetailView):
-    model = Book
+    model = Book# это значит моделью будет именно эта модель из файла моделей
     template_name = 'bookz/single.html'
-    context_object_name = 'book'
+    context_object_name = 'book'# здесь мы вручную задаем имя переменной контекста для лучшей читабельности
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.object.views = F('views') + 1
-        self.object.save()
-        self.object.refresh_from_db()
+        self.object.views = F('views') + 1# класс Ф нужен для обновления количества просмотров.
+        # мы обращаемся к атрибуту вьюс объекта бук и добавляем к имеющемуся там значению еще один просмотр
+        self.object.save()# метод сэйв сохраняет количество просмотров
+        self.object.refresh_from_db()# перезапрашиваем данные из базы данных после сохранения
         return context
 
 
@@ -96,6 +97,21 @@ class BooksByGenre(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Книги по жанру: ' + str(Genre.objects.get(slug=self.kwargs['slug']))
+        return context
+
+
+class BooksByOwners(ListView):
+    template_name = 'bookz/index.html'
+    context_object_name = 'books'
+    paginate_by = 4
+    allow_empty = False
+
+    def get_queryset(self):
+        return Book.objects.filter(owner__slug=self.kwargs['slug'])
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Книги по автору: ' + str(Owner.objects.get(slug=self.kwargs['slug']))
         return context
 
 
@@ -115,50 +131,33 @@ class Search(ListView):
 def newbook(request):
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
+
         if form.is_valid():
-            #print('valid')
+            book_entry = Book()
+            book_entry.title = form.cleaned_data['title']
+            book_entry.author = form.cleaned_data['author']
+            book_entry.content = form.cleaned_data['content']
+            book_entry.created_at = datetime.datetime.now()# выдает ошибку: type object 'datetime.datetime' has no attribute 'datetime'
+            book_entry.photo = form.cleaned_data['photo']
+            book_entry.owner = Owner.objects.get(email=request.user.email)# выдает ошибку: Owner matching query does not exist
+            book_entry.category = form.cleaned_data['category']
+            book_entry.genres = form.cleaned_data['genres']# выдает ошибку: Direct assignment to the forward side of a many-to-many set is prohibited. Use genres.set() instead.
+            book_entry.town = form.cleaned_data['town']
+            book_entry.type = form.cleaned_data['type']
 
-            post_entry = Book()
-            post_entry.title = form.cleaned_data['title']
-            post_entry.author = form.cleaned_data['author']
-            post_entry.content = form.cleaned_data['content']
-            #post_entry.genres = form.cleaned_data['genres']
-            #post_entry.created_at = datetime.datetime.now()
-            #post_entry.photo = form.cleaned_data['photo']
-            #post_entry.town = form.cleaned_data['town']
-            #post_entry.type = form.cleaned_data['type']
-
-            post_entry.save()
-            #print(form.cleaned_data)
+            book_entry.save()
+            #book_entry.genres.add(request.genres)
             #Book.objects.create(**form.cleaned_data)
             return redirect('/home/')
 
-    form = BookForm()
-    #print('not valid')
-    return render(request, 'newbook.html', {'form': form})
+    else:
+        form = BookForm()
+        return render(request, 'newbook.html', {'form': form})
 
-'''
-def add_book(request):
 
-    if request.method == "POST":
 
-        form = AddBookModelForm(request.POST, request.FILES) #or AddPost
+#создаю функцию чтобы выводить список жанров на отдельной странице
+def genres_all(request):
+    all_genres = Genre.objects.all()
 
-        if form.is_valid():
-
-            book_entry = Book()
-            book_entry.author = form.cleaned_data['author']
-            book_entry.issued = datetime.datetime.now()
-            book_entry.title = form.cleaned_data['title']
-            book_entry.subtitle = form.cleaned_data['subtitle']
-            book_entry.photo = form.cleaned_data['photo']
-            book_entry.type = form.cleaned_data['type']
-            book_entry.content = form.cleaned_data['content']
-
-            book_entry.save()
-            return redirect('/home/')
-
-    form = AddBookModelForm() #or AddPost
-    return render(request, 'add_book_old.html', {'form': form})
-
-'''
+    return render(request, 'genres_new.html', {'all_genres': all_genres})

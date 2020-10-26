@@ -1,14 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<a class="btn btn-primary" href="#" role="button">Link</a>
-<button class="btn btn-primary" type="submit">Button</button>
-<input class="btn btn-primary" type="button" value="Input">
-<input class="btn btn-primary" type="submit" value="Submit">
-<input class="btn btn-primary" type="reset" value="Reset">
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% load sidebar %}
+
+{% block title %}{{ book.title }} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <section class="bg-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>подари новую жизнь старой книге</h3>
+                        <p>РЕГИСТРАЦИЯ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="single-blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="border-top">
+                        <div class="col-md-8">
+                            <div class="blog-area">
+                                <div class="blog-area-part">
+                                    <div class="container">
+
+                                        <a class="btn btn-primary" href="#" role="button">Link</a>
+                                        <button class="btn btn-primary" type="submit">Button</button>
+                                        <input class="btn btn-primary" type="button" value="Input">
+                                        <input class="btn btn-primary" type="submit" value="Submit">
+                                        <input class="btn btn-primary" type="reset" value="Reset">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="border-top">
+                                                    <div class="col-md-8">
+                                                        <div class="blog-area">
+
+                                                            <a class="btn btn-primary" href="#" role="button">Link</a>
+                                                            <button class="btn btn-primary" type="submit">Button
+                                                            </button>
+                                                            <input class="btn btn-primary" type="button" value="Input">
+                                                            <input class="btn btn-primary" type="submit" value="Submit">
+                                                            <input class="btn btn-primary" type="reset" value="Reset">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="newsletter">
+                                <h1 class="sidebar-title">Внимание!</h1>
+                                <p style="font-size: x-large">Регистрация нужна для того, чтобы иметь возможность
+                                    добавлять свои книги и обмениваться ими с другими пользователями.</p>
+                                <!--
+                                <form action="{% url 'search' %}" method="get">
+                                    <input type="text" name="s" placeholder="Введите название книги">
+                                    <input type="submit" value="Поиск">
+                                </form>
+                            </div>
+
+                            {% get_popular 5 %}
+
+                            {% get_genres %}
+
+                            <div class="newsletter">
+                                <h2 class="sidebar-title">Subscribe To oUR nEWSLETTER</h2>
+                                <form action="#" method="post">
+                                    <input type="email" name="" id="" placeholder="Email">
+                                    <input type="submit" value="Subscribe">
+                                </form>
+                            </div>
+                            -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+{% endblock %}

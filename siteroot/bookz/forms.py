@@ -1,8 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Genre, Town, Type
-
+from .models import Genre, Town, Type, Category
 
 
 class UserLoginForm(AuthenticationForm):
@@ -23,10 +22,12 @@ class UserRegisterForm(UserCreationForm):
 class BookForm(forms.Form):
 
     title = forms.CharField(max_length=255, label='Название книги')
+    #slug = forms.SlugField(max_length=100, label='Название книги')
     author = forms.CharField(max_length=100, label='Автор книги')
     content = forms.CharField(label='Аннотация', widget=forms.Textarea)
-    #genres = forms.ModelMultipleChoiceField(queryset=Genre.objects.all(), label='Жанры', widget=forms.Select)
-    #photo = forms.ImageField(label='Фото обложки')
-    #town = forms.ModelChoiceField(queryset=Town.objects.all(), label='Город', widget=forms.Select)
-    #type = forms.ModelChoiceField(queryset=Type.objects.all(), label='Вариант', widget=forms.Select)
+    photo = forms.ImageField(label='Фото обложки')
+    genres = forms.ModelChoiceField(queryset=Genre.objects.all(), label='Жанры', widget=forms.SelectMultiple)
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), label='Категория')
+    town = forms.ModelChoiceField(queryset=Town.objects.all(), label='Город', widget=forms.Select)
+    type = forms.ModelChoiceField(queryset=Type.objects.all(), label='Вариант', widget=forms.Select)
 

@@ -12,11 +12,12 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'slug', 'author', 'category', 'content', 'created_at', 'get_photo', 'town', 'type', 'owner')
     list_display_links = ('id', 'title')
     search_fields = ('title',)
+    #перечеь полей по которым в админке организовывается фильтрация
     list_filter = ('category', 'genres')
     save_on_top = True
     readonly_fields = ('views', 'created_at', 'get_photo')
     #перечень полей которые показывает админка при добавлении новой книги
-    fields = ('title', 'author', 'genres', 'category', 'content', 'photo', 'get_photo', 'owner', 'town', 'type')
+    fields = ('title', 'slug', 'author', 'genres', 'category', 'content', 'photo', 'get_photo', 'owner', 'town', 'type')
 
     def get_photo(self, obj):
         if obj.photo:
