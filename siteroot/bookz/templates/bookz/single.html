@@ -6,6 +6,18 @@
 
 {% block content %}
 
+    <section class="bg-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>страница книги</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="single-blog-area">
         <div class="container">
             <div class="row">
@@ -32,7 +44,10 @@
                                         </span>
                                                 <br>
                                             {% endif %}
-                                            <span>Просмотрено раз: {{ book.views }}</span>
+                                            <span>Просмотрено {{ book.views }} раз(а)</span>
+                                         <br>
+                                            <span>E-mail для обратной связи: <a
+                                                    href="{{ book.owner.get_absolute_url }}">{{ book.owner.email }}</a></span>
                                         </div>
                                         {{ book.content|safe }}
                                     </div>

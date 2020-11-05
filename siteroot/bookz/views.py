@@ -1,12 +1,12 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 from .models import Book, Category, Genre, Owner
 from django.db.models import F
 from django.contrib import messages
-from .forms import UserRegisterForm, UserLoginForm, BookForm  # , AddBookModelForm
+from .forms import UserRegisterForm, UserLoginForm, BookForm, EmailBookForm  # , AddBookModelForm
 from django.contrib.auth import login, logout
-from datetime import datetime
+import datetime
 
 
 def register(request):
@@ -133,15 +133,20 @@ def newbook(request):
         form = BookForm(request.POST, request.FILES)
 
         if form.is_valid():
+            print('valid')#проверка валидности, ок
+            print(form.cleaned_data)#проверка что внутри, выдает все то что вводится в форму
+            print(request.user.email)#проверка выдается ли имейл, ок
+
             book_entry = Book()
             book_entry.title = form.cleaned_data['title']
             book_entry.author = form.cleaned_data['author']
             book_entry.content = form.cleaned_data['content']
-            book_entry.created_at = datetime.datetime.now()# выдает ошибку: type object 'datetime.datetime' has no attribute 'datetime'
+            book_entry.created_at = datetime.datetime.now()#ошибка исправилась когда поменял from datetime import datetime на import datetime
             book_entry.photo = form.cleaned_data['photo']
-            book_entry.owner = Owner.objects.get(email=request.user.email)# выдает ошибку: Owner matching query does not exist
+            book_entry.owner = Owner.objects.get(email=request.user.email)# выдает ошибку: Field 'id' expected a number but got 'sa_do@tut.by'
+            #book_entry.owner = get_object_or_404(Owner, pk=Owner.email)# выдает ошибку: Owner matching query does not exist
             book_entry.category = form.cleaned_data['category']
-            book_entry.genres = form.cleaned_data['genres']# выдает ошибку: Direct assignment to the forward side of a many-to-many set is prohibited. Use genres.set() instead.
+            book_entry.genres = form.cleaned_data['genres']
             book_entry.town = form.cleaned_data['town']
             book_entry.type = form.cleaned_data['type']
 
@@ -149,10 +154,13 @@ def newbook(request):
             #book_entry.genres.add(request.genres)
             #Book.objects.create(**form.cleaned_data)
             return redirect('/home/')
+        print('invalid')
+        print(form.cleaned_data)
 
     else:
         form = BookForm()
         return render(request, 'newbook.html', {'form': form})
+        print()
 
 
 
@@ -161,3 +169,49 @@ def genres_all(request):
     all_genres = Genre.objects.all()
 
     return render(request, 'genres_new.html', {'all_genres': all_genres})
+
+#создаю функцию чтобы выводить список книг на отдельной странице
+def books_all(request):
+    all_books = Book.objects.all()
+
+    return render(request, 'find_book.html', {'all_books': all_books})
+
+
+#создаю функцию чтобы выводить список популярных книг на отдельной странице
+def popular(request):
+    books = Book.objects.order_by('-views')[:4]
+    return render(request, 'popular.html', {"books": books})
+
+#создаю функцию чтобы выводить список недавно добавленных книг на отдельной странице
+def novinki(request):
+    books = Book.objects.order_by('-created_at')[:4]
+    return render(request, 'novinki.html', {"books": books})
+
+#создаю функцию чтобы выводить страницу о сайте
+def about(request):
+    #pass
+    #books = Book.objects.order_by('-created_at')[:4]
+    return render(request, 'about.html')
+
+'''
+#представление обмена электронными сообщениями посредством почты
+def book_share(request, book_id):
+    # Получить пост по id
+    book = get_object_or_404(Book, id=book_id, status='published')
+    sent = False
+    if request.method == 'POST':
+        # Форма была отправлена
+        form = EmailBookForm(request.POST)
+        if form.is_valid():
+            # Поля формы прошли проверку
+	        cd = form.cleaned_data
+            book_url = request.build_absolute_url(book.get_absolute_url())
+            subject = '{} ({}) recommends you reading " {}"'.format(cd['name'], cd['email'], book.title)
+            message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(book.title, book_url, cd['name'], cd['comments'])
+            send_mail(subject, message, 'admin@myblog.com', [cd['to']])
+            sent = True
+            # ... отправить письмо
+    else:
+        form = EmailBookForm()
+    return render(request, '/bookz/share.html', {'book': book, 'form': form})
+'''

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load sidebar %}
+
+{% block title %}{{ book.title }} :: {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <section class="bg-text-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bg-text">
+                        <h3>поиск книги</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="single-blog-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="border-top">
+                        <div class="col-md-8">
+                            <div class="blog-area">
+                                <div class="blog-area-part">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="border-top">
+                                                    <div class="col-md-8">
+                                                        <div class="blog-area">
+                                                            <div class="newsletter">
+                                                                <h2 class="sidebar-title">Поиск</h2>
+                                                                <form action="{% url 'search' %}" method="get">
+                                                                    <input type="text" name="s"
+                                                                           placeholder="Введите название книги">
+                                                                    <input type="submit" value="Поиск">
+                                                                </form>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="newsletter">
+                                <h1 class="sidebar-title">Страница поиска книги</h1>
+                                <p style="font-size: x-large">Вы можете найти нужную книгу здесь, учитывайте регистр при вводе</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+{% endblock %}

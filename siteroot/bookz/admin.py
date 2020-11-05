@@ -53,3 +53,11 @@ admin.site.register(Book, BookAdmin)
 admin.site.register(Type, TypeAdmin)
 admin.site.register(Town, TownAdmin)
 admin.site.register(Owner, OwnerAdmin)
+
+
+#добавляем в админку раздел комментариев
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'book', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')

@@ -4,35 +4,11 @@
         <ul>
             <!--<li class="active"><a href="#">Home</a></li>-->
             <li><a href="/genres/">жанры</a></li>
-            <li><a href="#">новинки</a></li>
-            <li><a href="#">популярное</a></li>
-            <li><a href="#">поиск книг</a></li>
-            <li><a href="#">о проекте</a></li>
+            <li><a href="/novinki/">новинки</a></li>
+            <li><a href="/popular/">популярное</a></li>
+            <li><a href="/find_book/">поиск книг</a></li>
+            <li><a href="/about/">о сайте</a></li>
         </ul>
     </div>
 </div>
 
-<!--
-<div class="{{ menu_class }}">
-    <ul>
-        {% for item in categories %}
-            <li><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></li>
-        {% endfor %}
-
-        {% if request.user.is_authenticated %}
-
-            <li><a href="#">Выход</a></li>
-            <li><a href="#">{{ user }}</a></li>
-
-        {% else %}
-
-            <li><a href="{% url 'login' %}">Вход</a></li>
-            <li><a href="{% url 'logout' %}">Выход {{ user }}</a></li>
-            <li><a href="{% url 'register' %}">Регистрация</a></li>
-
-        {% endif %}
-
-    </ul>
-
-</div>
--->
