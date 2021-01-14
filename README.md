@@ -1,8 +1,8 @@
 # ibook
 
-This repository contains my graduated project - bookcrossing site on Python/Django
+This repository contains my senior project for the comprehensive Python/Django web development course in IT Academy - bookcrossing site on Python/Django
 
-Realised:
+Features realised:
 1. all books on homepage
 2. single book page
 3. sort books by date
@@ -15,7 +15,7 @@ Realised:
 10. add book page
 11. admin page
 
-Not realised:
+Features not realised:
 1. add book via site page (only via admin page)
 2. users comments
 3. users communication
